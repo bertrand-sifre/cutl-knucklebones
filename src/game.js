@@ -1,4 +1,4 @@
-const { countBy, multiply } = require('lodash')
+const { countBy } = require('lodash')
 
 /**
  * @typedef {1 | 2 | 3 | 4 | 5 | 6} DiceValue
@@ -12,7 +12,7 @@ const { countBy, multiply } = require('lodash')
  * @typedef {[Column, Column, Column]} PlayerBoard
  */
 
-class Board {
+class Game {
   constructor() {
     /** @type {[PlayerBoard, PlayerBoard]} */
     this.board = [[[], [], []], [[], [], []]]
@@ -37,7 +37,9 @@ class Board {
     if (boardPlayer[column - 1].length === 3) {
       throw new Error('You cannot play here')
     }
-    boardPlayer[column - 1].push(diceValue)
+    const c = boardPlayer[column - 1]
+    //@ts-ignore
+    c.push(diceValue)
   }
 
   /**
@@ -78,4 +80,4 @@ class Board {
   }
 }
 
-module.exports = Board
+module.exports = Game
