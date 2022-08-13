@@ -1,3 +1,5 @@
+const { countBy, multiply } = require('lodash')
+
 /**
  * @typedef {1 | 2 | 3 | 4 | 5 | 6} DiceValue
  */
@@ -59,8 +61,10 @@ class Board {
    */
   #getPoint(playerBoard) {
     return playerBoard.reduce((totalPoint, column) => {
-      return totalPoint + column.reduce((ColumnPoint, value) => {
-        return ColumnPoint + value
+      const groupBy = countBy(column)
+      return totalPoint + Object.keys(groupBy).reduce((columnPoint, key) => {
+        const pt = Number.parseInt(key)
+        return columnPoint + pt * groupBy[key] * Math.pow(2, groupBy[key] - 1)
       }, 0)
     }, 0)
   }
