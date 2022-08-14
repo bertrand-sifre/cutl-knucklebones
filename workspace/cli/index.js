@@ -36,7 +36,7 @@ program.action(async () => {
       type: 'list',
       message: `Player ${player} draw ${diceFace[diceValue]}, choose a column`,
       name: 'value',
-      choices: [1, 2, 3]
+      choices: game.getPlayableColumn(player)
     })
     // player
     game.play(player, diceValue, column.value)

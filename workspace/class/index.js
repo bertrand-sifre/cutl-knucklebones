@@ -29,6 +29,10 @@ class Game {
   isFinish() {
     return f.isFinish(this.board)
   }
+
+  getPlayableColumn(player) {
+    return f.getPlayableColumn(this.board, player)
+  }
 }
 
 module.exports = Game

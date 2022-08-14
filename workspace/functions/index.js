@@ -95,17 +95,21 @@ const getPlayer2Point = function (board) {
 }
 
 /**
- * @param {PlayerBoard} playerBoard 
+ * @param {Board} board
  */
-const playerBoardIsFinish = function (playerBoard) {
-  return playerBoard[0].length === 3 && playerBoard[1].length === 3 && playerBoard[2].length === 3
+const isFinish = function (board) {
+  return getPlayableColumn(board, 1).length === 0 || getPlayableColumn(board, 2).length === 0
 }
 
 /**
  * @param {Board} board
+ * @param {number} player
+ * @return {number[]}
  */
-const isFinish = function (board) {
-  return playerBoardIsFinish(board[0]) || playerBoardIsFinish(board[1])
+const getPlayableColumn = function (board, player) {
+  return [0, 1, 2].filter(columnIndex => {
+    return board[player - 1][columnIndex].length < 3
+  }).map(a => a + 1)
 }
 
 module.exports = {
@@ -116,4 +120,5 @@ module.exports = {
   playPlayer2,
   play,
   isFinish,
+  getPlayableColumn,
 }
