@@ -1,4 +1,4 @@
-const { countBy, pull } = require('lodash')
+const { countBy, pullAllBy } = require('lodash')
 /**
  * @typedef {1 | 2} Player
  */
@@ -12,7 +12,23 @@ const { countBy, pull } = require('lodash')
  */
 
 /**
- * @typedef {[DiceValue, DiceValue, DiceValue] | [DiceValue, DiceValue] | [DiceValue] | []} Column
+ * @typedef {'simple' | 'double' | 'triple'} DiceState
+ */
+
+/**
+ * @typedef {{value: DiceValue, state: DiceState}} Dice
+ */
+
+/**
+ * @typedef {DiceValue[]} DiceValueColumn
+ */
+
+/**
+ * @typedef {Dice[]} Column
+ */
+
+/**
+ * @typedef {[DiceValueColumn, DiceValueColumn, DiceValueColumn]} DiceValuePlayerBoard
  */
 
 /**
@@ -24,9 +40,29 @@ const { countBy, pull } = require('lodash')
  */
 
 /**
+ * @typedef {[DiceValuePlayerBoard, DiceValuePlayerBoard]} DiceValueBoard
+ */
+
+/**
+ * @param {DiceValueBoard=} diceValueBoard
  * @returns {Board}
  */
-const initBoard = function () {
+const initBoard = function (diceValueBoard) {
+  if (diceValueBoard) {
+    const states = ['none', 'simple', 'double', 'triple']
+    // @ts-ignore
+    return diceValueBoard.map(diceValuePlayerBoard => {
+      return diceValuePlayerBoard.map(diceValueColumn => {
+        const groupBy = countBy(diceValueColumn)
+        return diceValueColumn.map(diceValue => {
+          return {
+            value: diceValue,
+            state: states[groupBy[diceValue]]
+          }
+        })
+      })
+    })
+  }
   return [[[], [], []], [[], [], []]]
 }
 
@@ -51,9 +87,8 @@ const play = function (board, player, diceValue, column) {
   if (boardPlayer[column - 1].length === 3) {
     throw new Error('You cannot play here')
   }
-  //@ts-ignore
-  boardPlayer[column - 1].push(diceValue)
-  pull(boardAdversary[column - 1], diceValue)
+  boardPlayer[column - 1].push({ value: diceValue, state: 'simple' })
+  pullAllBy(boardAdversary[column - 1], [{ value: diceValue }], 'value')
 }
 
 /**
@@ -61,7 +96,7 @@ const play = function (board, player, diceValue, column) {
  */
 const getPoint = function (playerBoard) {
   return playerBoard.reduce((totalPoint, column) => {
-    const groupBy = countBy(column)
+    const groupBy = countBy(column, 'value')
     return totalPoint + Object.keys(groupBy).reduce((columnPoint, key) => {
       const pt = Number.parseInt(key)
       return columnPoint + pt * groupBy[key] * Math.pow(2, groupBy[key] - 1)
