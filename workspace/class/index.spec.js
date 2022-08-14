@@ -20,6 +20,15 @@ describe('Board', () => {
     expect(p2Points).toEqual(24)
     expect(p1Points).toEqual(42)
   })
+  it('state dice', () => {
+    const game = new Game()
+    game.board = initBoard([[[1, 1, 1], [2, 3], [4, 4, 3]], [[4, 5, 1], [4, 6], [4]]])
+
+    game.playPlayer1(2, 2)
+
+    expect(game.board[0][0][0].state).toEqual('triple')
+    expect(game.board[0][1][0].state).toEqual('double')
+  })
   it('player 1 play', () => {
     const game = new Game()
     game.playPlayer1(1, 1)

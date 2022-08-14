@@ -43,13 +43,14 @@ const { countBy, pullAllBy } = require('lodash')
  * @typedef {[DiceValuePlayerBoard, DiceValuePlayerBoard]} DiceValueBoard
  */
 
+/** @type {DiceState[]} */
+const states = ['simple', 'simple', 'double', 'triple']
 /**
  * @param {DiceValueBoard=} diceValueBoard
  * @returns {Board}
  */
 const initBoard = function (diceValueBoard) {
   if (diceValueBoard) {
-    const states = ['none', 'simple', 'double', 'triple']
     // @ts-ignore
     return diceValueBoard.map(diceValuePlayerBoard => {
       return diceValuePlayerBoard.map(diceValueColumn => {
@@ -87,7 +88,15 @@ const play = function (board, player, diceValue, column) {
   if (boardPlayer[column - 1].length === 3) {
     throw new Error('You cannot play here')
   }
+  // push dice on player board
   boardPlayer[column - 1].push({ value: diceValue, state: 'simple' })
+  // update dice state
+  boardPlayer[column - 1]
+    .filter(dice => dice.value === diceValue)
+    .forEach((dice, index, array) => {
+      dice.state = states[array.length]
+    })
+  // remove all dice with same value on adersary board
   pullAllBy(boardAdversary[column - 1], [{ value: diceValue }], 'value')
 }
 
