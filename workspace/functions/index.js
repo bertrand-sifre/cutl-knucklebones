@@ -99,4 +99,5 @@ module.exports = {
   getPlayer2Point,
   playPlayer1,
   playPlayer2,
+  play,
 }

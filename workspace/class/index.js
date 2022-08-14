@@ -21,6 +21,10 @@ class Game {
   playPlayer2(diceValue, column) {
     return f.playPlayer2(this.board, diceValue, column)
   }
+
+  play(board, player, diceValue, column) {
+    return f.play(board, player, diceValue, column)
+  }
 }
 
 module.exports = Game
