@@ -26,18 +26,23 @@ const printBoard = function () {
 }
 
 program.action(async () => {
-  // roll dice
-  const diceValue = Math.floor(Math.random() * 6) + 1
-  // choose the column
-  const column = await inquirer.prompt({
-    type: 'list',
-    message: `You draw ${diceFace[diceValue]} choose a column`,
-    name: 'value',
-    choices: [1, 2, 3]
-  })
-  game.playPlayer1(diceValue, column.value)
-  // print the gameboard
-  printBoard()
+  let turn = -1
+  while (!game.isFinish()) {
+    const player = (turn++ % 2) + 1
+    // roll dice
+    const diceValue = Math.floor(Math.random() * 6) + 1
+    // choose the column
+    const column = await inquirer.prompt({
+      type: 'list',
+      message: `Player ${player} draw ${diceFace[diceValue]}, choose a column`,
+      name: 'value',
+      choices: [1, 2, 3]
+    })
+    // player
+    game.play(player, diceValue, column.value)
+    // print the gameboard
+    printBoard()
+  }
 })
 
 program.parse()

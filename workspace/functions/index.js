@@ -93,6 +93,20 @@ const getPlayer2Point = function (board) {
   return getPoint(board[1])
 }
 
+/**
+ * @param {PlayerBoard} playerBoard 
+ */
+const playerBoardIsFinish = function (playerBoard) {
+  return playerBoard[0].length === 3 && playerBoard[1].length === 3 && playerBoard[2].length === 3
+}
+
+/**
+ * @param {Board} board
+ */
+const isFinish = function (board) {
+  return playerBoardIsFinish(board[0]) || playerBoardIsFinish(board[1])
+}
+
 module.exports = {
   initBoard,
   getPlayer1Point,
@@ -100,4 +114,5 @@ module.exports = {
   playPlayer1,
   playPlayer2,
   play,
+  isFinish,
 }

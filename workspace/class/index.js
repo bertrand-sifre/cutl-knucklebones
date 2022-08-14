@@ -22,8 +22,12 @@ class Game {
     return f.playPlayer2(this.board, diceValue, column)
   }
 
-  play(board, player, diceValue, column) {
-    return f.play(board, player, diceValue, column)
+  play(player, diceValue, column) {
+    return f.play(this.board, player, diceValue, column)
+  }
+
+  isFinish() {
+    return f.isFinish(this.board)
   }
 }
 
