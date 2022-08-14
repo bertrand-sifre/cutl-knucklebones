@@ -5,7 +5,8 @@
     "workspace/*"
   ],
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "test-coverage": "jest --collect-coverage"
   },
   "dependencies": {
     "@types/jest": "^28.1.6",
