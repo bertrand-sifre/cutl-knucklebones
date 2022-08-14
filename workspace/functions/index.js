@@ -1,4 +1,11 @@
 const { countBy, pull } = require('lodash')
+/**
+ * @typedef {1 | 2} Player
+ */
+
+/**
+ * @typedef {1 | 2 | 3} ColumnIndex
+ */
 
 /**
  * @typedef {1 | 2 | 3 | 4 | 5 | 6} DiceValue
@@ -25,9 +32,9 @@ const initBoard = function () {
 
 /**
  * @param {Board} board
- * @param {number} player 
+ * @param {Player} player 
  * @param {DiceValue} diceValue 
- * @param {number} column 
+ * @param {ColumnIndex} column 
  */
 const play = function (board, player, diceValue, column) {
   if (player < 1 || player > 2) {
@@ -50,25 +57,7 @@ const play = function (board, player, diceValue, column) {
 }
 
 /**
- * @param {Board} board
- * @param {DiceValue} diceValue 
- * @param {number} column 
- */
-const playPlayer1 = function (board, diceValue, column) {
-  play(board, 1, diceValue, column)
-}
-
-/**
- * @param {Board} board
- * @param {DiceValue} diceValue 
- * @param {number} column 
- */
-const playPlayer2 = function (board, diceValue, column) {
-  play(board, 2, diceValue, column)
-}
-
-/**
- * @param {number[][]} playerBoard 
+ * @param {PlayerBoard} playerBoard 
  */
 const getPoint = function (playerBoard) {
   return playerBoard.reduce((totalPoint, column) => {
@@ -103,21 +92,21 @@ const isFinish = function (board) {
 
 /**
  * @param {Board} board
- * @param {number} player
- * @return {number[]}
+ * @param {Player} player
+ * @return {ColumnIndex[]}
  */
 const getPlayableColumn = function (board, player) {
-  return [0, 1, 2].filter(columnIndex => {
-    return board[player - 1][columnIndex].length < 3
-  }).map(a => a + 1)
+  /** @type {ColumnIndex[]} */
+  const columnIndex = [1, 2, 3]
+  return columnIndex.filter(columnIndex => {
+    return board[player - 1][columnIndex - 1].length < 3
+  })
 }
 
 module.exports = {
   initBoard,
   getPlayer1Point,
   getPlayer2Point,
-  playPlayer1,
-  playPlayer2,
   play,
   isFinish,
   getPlayableColumn,

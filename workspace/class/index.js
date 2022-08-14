@@ -15,11 +15,11 @@ class Game {
   }
 
   playPlayer1(diceValue, column) {
-    return f.playPlayer1(this.board, diceValue, column)
+    return this.play(1, diceValue, column)
   }
 
   playPlayer2(diceValue, column) {
-    return f.playPlayer2(this.board, diceValue, column)
+    return this.play(2, diceValue, column)
   }
 
   play(player, diceValue, column) {
