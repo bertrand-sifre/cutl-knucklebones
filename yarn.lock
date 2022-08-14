@@ -1430,6 +1430,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "cutl-knucklebones-cli@workspace:workspace/cli"
   dependencies:
+    chalk: ^4.0.0
     commander: ^9.4.0
     cutl-knucklebones-class: "workspace:^"
     inquirer: ^8.0.0

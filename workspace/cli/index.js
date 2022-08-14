@@ -1,12 +1,22 @@
 const { program } = require('commander')
 const inquirer = require('inquirer')
 const Game = require('cutl-knucklebones-class')
+const chalk = require('chalk')
+
 const game = new Game()
 
 const diceFace = [" ", "\u2680", "\u2681", "\u2682", "\u2683", "\u2684", "\u2685"]
 
 const printDice = function (player, column, dice) {
-  return diceFace[game.board[player][column][dice] || 0]
+  const die = game.board[player][column][dice]
+  const value = diceFace[die?.value || 0]
+  if (die?.state === 'double') {
+    return chalk.yellow(value)
+  }
+  if (die?.state === 'triple') {
+    return chalk.blue(value)
+  }
+  return value
 }
 
 const printBoard = function () {
