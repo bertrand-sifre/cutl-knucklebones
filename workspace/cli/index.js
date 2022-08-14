@@ -28,7 +28,7 @@ const printBoard = function () {
 program.action(async () => {
   let turn = -1
   while (!game.isFinish()) {
-    const player = (turn++ % 2) + 1
+    const player = (++turn % 2) + 1
     // roll dice
     const diceValue = Math.floor(Math.random() * 6) + 1
     // choose the column
