@@ -1,4 +1,4 @@
-const { countBy } = require('lodash')
+const { countBy, pull } = require('lodash')
 
 /**
  * @typedef {1 | 2 | 3 | 4 | 5 | 6} DiceValue
@@ -40,12 +40,13 @@ const play = function (board, player, diceValue, column) {
     throw new Error('The column is 1, 2 or 3')
   }
   const boardPlayer = board[player - 1]
+  const boardAdversary = board[player % 2]
   if (boardPlayer[column - 1].length === 3) {
     throw new Error('You cannot play here')
   }
-  const c = boardPlayer[column - 1]
   //@ts-ignore
-  c.push(diceValue)
+  boardPlayer[column - 1].push(diceValue)
+  pull(boardAdversary[column - 1], diceValue)
 }
 
 /**
