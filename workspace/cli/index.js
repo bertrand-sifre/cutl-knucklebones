@@ -2,6 +2,7 @@ const { program, Option } = require('commander')
 const inquirer = require('inquirer')
 const Game = require('cutl-knucklebones-class')
 const chalk = require('chalk')
+const Table = require('cli-table3')
 
 const game = new Game()
 
@@ -28,19 +29,20 @@ const printDice = function (player, column, dice, displayType) {
  * @param {'utf8' | 'number'} displayType
  */
 const printBoard = function (displayType) {
-  let str = ""
-  str += '+-+-+-+\n'
+  const table = new Table({})
   for (let player = 0; player < 2; player++) {
     for (let dice = player === 0 ? 2 : 0; player === 0 ? dice >= 0 : dice < 3; player === 0 ? dice-- : dice++) {
-      str += '|'
+      const line = []
       for (let column = 0; column < 3; column++) {
-        str += printDice(player, column, dice, displayType) + '|'
+        line.push({
+          content: printDice(player, column, dice, displayType),
+          chars: { mid: player === 1 && dice === 0 ? "─" : " " }
+        })
       }
-      str += '\n'
+      table.push(line)
     }
-    str += '+-+-+-+\n'
   }
-  console.log(str)
+  console.log(table.toString())
 }
 
 program

@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "chalk": "^4.0.0",
+    "cli-table3": "^0.6.2",
     "commander": "^9.4.0",
     "cutl-knucklebones-class": "workspace:^",
     "inquirer": "^8.0.0"
