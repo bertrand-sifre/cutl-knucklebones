@@ -8,8 +8,10 @@ describe('Board', () => {
 
     const p1Points = game.getPlayer1Point()
     const p2Points = game.getPlayer2Point()
-    expect(p1Points).toEqual(18)
-    expect(p2Points).toEqual(45)
+    expect(p1Points.total).toEqual(18)
+    expect(p1Points.column).toEqual([6, 6, 6])
+    expect(p2Points.total).toEqual(45)
+    expect(p2Points.column).toEqual([15, 15, 15])
   })
   it('Double points', () => {
     const game = new Game()
@@ -17,8 +19,10 @@ describe('Board', () => {
 
     const p1Points = game.getPlayer1Point()
     const p2Points = game.getPlayer2Point()
-    expect(p2Points).toEqual(24)
-    expect(p1Points).toEqual(42)
+    expect(p1Points.total).toEqual(42)
+    expect(p1Points.column).toEqual([12, 11, 19])
+    expect(p2Points.total).toEqual(24)
+    expect(p2Points.column).toEqual([10, 10, 4])
   })
   it('state dice', () => {
     const game = new Game()
@@ -32,8 +36,8 @@ describe('Board', () => {
   it('player 1 play', () => {
     const game = new Game()
     game.playPlayer1(1, 1)
-    expect(game.getPlayer1Point()).toEqual(1)
-    expect(game.getPlayer2Point()).toEqual(0)
+    expect(game.getPlayer1Point().total).toEqual(1)
+    expect(game.getPlayer2Point().total).toEqual(0)
   })
   it('Remove adversary dice when play same value on same column', () => {
     const game = new Game()

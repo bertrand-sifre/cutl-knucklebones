@@ -101,16 +101,19 @@ const play = function (board, player, diceValue, column) {
 }
 
 /**
- * @param {PlayerBoard} playerBoard 
+ * @param {PlayerBoard} playerBoard
+ * @return {{total: number, column:[number, number, number]}}
  */
 const getPoint = function (playerBoard) {
-  return playerBoard.reduce((totalPoint, column) => {
+  return playerBoard.reduce((acc, column, index) => {
     const groupBy = countBy(column, 'value')
-    return totalPoint + Object.keys(groupBy).reduce((columnPoint, key) => {
+    acc.column[index] = Object.keys(groupBy).reduce((columnPoint, key) => {
       const pt = Number.parseInt(key)
       return columnPoint + pt * groupBy[key] * Math.pow(2, groupBy[key] - 1)
     }, 0)
-  }, 0)
+    acc.total += acc.column[index]
+    return acc
+  }, { total: 0, column: [0, 0, 0] })
 }
 
 /**
