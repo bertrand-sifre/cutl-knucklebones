@@ -6,14 +6,31 @@ const Table = require('cli-table3')
 
 const game = new Game()
 
-const diceFaceUtf8 = [" ", "\u2680", "\u2681", "\u2682", "\u2683", "\u2684", "\u2685"]
-const diceFaceNumber = [" ", "1", "2", "3", "4", "5", "6"]
+const diceFaces = {
+  utf8: [" ", "\u2680", "\u2681", "\u2682", "\u2683", "\u2684", "\u2685"],
+  number: [" ", "1", "2", "3", "4", "5", "6"],
+  zoom: [
+    "     \n     \n     ",
+    "     \n  ●  \n     ",
+    "    ●\n     \n●    ",
+    "    ●\n  ●  \n●    ",
+    "●   ●\n     \n●   ●",
+    "●   ●\n  ●  \n●   ●",
+    "●   ●\n●   ●\n●   ●"
+  ],
+}
+
+const promptFaces = {
+  utf8: diceFaces.utf8,
+  number: diceFaces.number,
+  zoom: diceFaces.number,
+}
 
 /**
  * @param {'utf8' | 'number'} displayType
  */
 const printDice = function (player, column, dice, displayType) {
-  const diceFace = displayType === 'number' ? diceFaceNumber : diceFaceUtf8
+  const diceFace = diceFaces[displayType]
   const die = game.board[player][column][dice]
   const value = diceFace[die?.value || 0]
   if (die?.state === 'double') {
@@ -46,10 +63,10 @@ const printBoard = function (displayType) {
 }
 
 program
-  .addOption(new Option('--dice-display <type>', 'Chosse utf-8 to display the dice').default('utf-8').choices(['utf8', 'number']))
+  .addOption(new Option('--dice-display <type>', 'Chosse utf-8 to display the dice').default('utf-8').choices(['utf8', 'number', 'zoom']))
   .action(async (options) => {
     const displayType = options.diceDisplay
-    const diceFace = displayType === 'number' ? diceFaceNumber : diceFaceUtf8
+    const diceFace = promptFaces[displayType]
     let turn = -1
     while (!game.isFinish()) {
       const player = (++turn % 2) + 1
