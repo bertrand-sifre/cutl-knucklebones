@@ -1,4 +1,4 @@
-const { countBy, pullAllBy } = require('lodash')
+const { countBy, pullAllWith } = require('lodash')
 /**
  * @typedef {1 | 2} Player
  */
@@ -16,19 +16,11 @@ const { countBy, pullAllBy } = require('lodash')
  */
 
 /**
- * @typedef {{value: DiceValue, state: DiceState}} Dice
- */
-
-/**
- * @typedef {DiceValue[]} DiceValueColumn
+ * @typedef {{value: DiceValue, state: DiceState} | DiceValue} Dice
  */
 
 /**
  * @typedef {Dice[]} Column
- */
-
-/**
- * @typedef {[DiceValueColumn, DiceValueColumn, DiceValueColumn]} DiceValuePlayerBoard
  */
 
 /**
@@ -39,14 +31,10 @@ const { countBy, pullAllBy } = require('lodash')
  * @typedef {[PlayerBoard, PlayerBoard]} Board
  */
 
-/**
- * @typedef {[DiceValuePlayerBoard, DiceValuePlayerBoard]} DiceValueBoard
- */
-
 /** @type {DiceState[]} */
 const states = ['simple', 'simple', 'double', 'triple']
+
 /**
- * @param {DiceValueBoard=} diceValueBoard
  * @returns {Board}
  */
 const initBoard = function (diceValueBoard) {
@@ -57,7 +45,7 @@ const initBoard = function (diceValueBoard) {
         const groupBy = countBy(diceValueColumn)
         return diceValueColumn.map(diceValue => {
           return {
-            value: diceValue,
+            value: getDiceValue(diceValue),
             state: states[groupBy[diceValue]]
           }
         })
@@ -65,6 +53,17 @@ const initBoard = function (diceValueBoard) {
     })
   }
   return [[[], [], []], [[], [], []]]
+}
+
+/**
+ * @param {Dice} dice 
+ * @return {DiceValue}
+ */
+const getDiceValue = function (dice) {
+  if (typeof dice === 'number') {
+    return dice
+  }
+  return dice?.value
 }
 
 /**
@@ -91,13 +90,30 @@ const play = function (board, player, diceValue, column) {
   // push dice on player board
   boardPlayer[column - 1].push({ value: diceValue, state: 'simple' })
   // update dice state
-  boardPlayer[column - 1]
-    .filter(dice => dice.value === diceValue)
-    .forEach((dice, index, array) => {
-      dice.state = states[array.length]
-    })
+  const state = states[boardPlayer[column - 1].filter(dice => getDiceValue(dice) === diceValue).length]
+  boardPlayer[column - 1].forEach((dice, index) => {
+    if (getDiceValue(dice) === diceValue) {
+      boardPlayer[column - 1][index] = {
+        state: state,
+        value: getDiceValue(dice)
+      }
+    }
+  })
   // remove all dice with same value on adersary board
-  pullAllBy(boardAdversary[column - 1], [{ value: diceValue }], 'value')
+  pullAllWith(boardAdversary[column - 1], [{ value: diceValue }], (a, b) => getDiceValue(a) === getDiceValue(b))
+}
+
+/**
+ * 
+ * @param {Column} column 
+ * @return {number}
+ */
+const getColumnPoint = function (column) {
+  const groupBy = countBy(column, getDiceValue)
+  return Object.keys(groupBy).reduce((columnPoint, key) => {
+    const pt = Number.parseInt(key)
+    return columnPoint + pt * groupBy[key] * Math.pow(2, groupBy[key] - 1)
+  }, 0)
 }
 
 /**
@@ -106,11 +122,7 @@ const play = function (board, player, diceValue, column) {
  */
 const getPoint = function (playerBoard) {
   return playerBoard.reduce((acc, column, index) => {
-    const groupBy = countBy(column, 'value')
-    acc.column[index] = Object.keys(groupBy).reduce((columnPoint, key) => {
-      const pt = Number.parseInt(key)
-      return columnPoint + pt * groupBy[key] * Math.pow(2, groupBy[key] - 1)
-    }, 0)
+    acc.column[index] = getColumnPoint(column)
     acc.total += acc.column[index]
     return acc
   }, { total: 0, column: [0, 0, 0] })
@@ -157,4 +169,5 @@ module.exports = {
   play,
   isFinish,
   getPlayableColumn,
+  getColumnPoint,
 }
