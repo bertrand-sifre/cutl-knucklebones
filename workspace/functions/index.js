@@ -1,4 +1,4 @@
-const { countBy, pullAllWith } = require('lodash')
+const { countBy, pullAllWith, every, flatMapDeep } = require('lodash')
 /**
  * @typedef {1 | 2} Player
  */
@@ -13,6 +13,10 @@ const { countBy, pullAllWith } = require('lodash')
 
 /**
  * @typedef {'simple' | 'double' | 'triple'} DiceState
+ */
+
+/**
+ * @typedef {'object' | 'number'} DiceType
  */
 
 /**
@@ -65,6 +69,15 @@ const getDiceValue = function (dice) {
   }
   return dice?.value
 }
+/**
+ * @param {Board} board
+ */
+const getDiceType = function (board) {
+  if (every(flatMapDeep(board), Number)) {
+    return 'number'
+  }
+  return 'object'
+}
 
 /**
  * @param {Board} board
@@ -87,20 +100,22 @@ const play = function (board, player, diceValue, column) {
   if (boardPlayer[column - 1].length === 3) {
     throw new Error('You cannot play here')
   }
+  const diceType = getDiceType(board)
   // push dice on player board
-  boardPlayer[column - 1].push({ value: diceValue, state: 'simple' })
-  // update dice state
-  const state = states[boardPlayer[column - 1].filter(dice => getDiceValue(dice) === diceValue).length]
-  boardPlayer[column - 1].forEach((dice, index) => {
-    if (getDiceValue(dice) === diceValue) {
-      boardPlayer[column - 1][index] = {
-        state: state,
-        value: getDiceValue(dice)
+  boardPlayer[column - 1].push(diceType === 'number' ? diceValue : { value: diceValue, state: 'simple' })
+  if (diceType === 'object') {
+    // update dice state
+    boardPlayer[column - 1].filter(dice => {
+      return getDiceValue(dice) === diceValue
+    }).forEach((dice, index, array) => {
+      if (getDiceValue(dice) === diceValue) {
+        // @ts-ignore
+        dice.state = states[array.length]
       }
-    }
-  })
+    })
+  }
   // remove all dice with same value on adersary board
-  pullAllWith(boardAdversary[column - 1], [{ value: diceValue }], (a, b) => getDiceValue(a) === getDiceValue(b))
+  pullAllWith(boardAdversary[column - 1], [diceValue], (a, b) => getDiceValue(a) === getDiceValue(b))
 }
 
 /**
