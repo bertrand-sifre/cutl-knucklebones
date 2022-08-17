@@ -39,13 +39,13 @@ const promptFaces = {
  */
 const getDiceSymbol = function (player, column, dice, displayType) {
   const diceFace = diceFaces[displayType]
-  const die = game.board[player][column][dice]
+  const die = game.getDiceState()[player][column][dice]
   const value = diceFace[die?.value || 0]
   return value
 }
 
 const getDiceStyle = function (player, column, dice) {
-  const die = game.board[player][column][dice]
+  const die = game.getDiceState()[player][column][dice]
   /** @type {{border:string[], head:string[]}} */
   const rst = { border: [], head: [] }
   if (die?.state === 'double') {
@@ -162,8 +162,12 @@ program
     const diceFace = promptFaces[displayType]
     let turn = -1
     while (!game.isFinish()) {
-      const player = (++turn % 2) + 1
+      /** @type {import('cutl-knucklebones-functions').Player} */
+      // @ts-ignore
+      const player = (++turn % 2)
       // roll dice
+      /** @type {import('cutl-knucklebones-functions').DiceValue} */
+      // @ts-ignore
       const diceValue = Math.floor(Math.random() * 6) + 1
       // print the gameboard
       printBoard(displayType, player - 1, diceValue)

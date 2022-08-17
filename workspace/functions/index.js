@@ -1,82 +1,40 @@
-const { countBy, pullAllWith, every, flatMapDeep } = require('lodash')
+const { countBy, pull } = require('lodash')
 /**
- * @typedef {1 | 2} Player
- */
-
-/**
- * @typedef {1 | 2 | 3} ColumnIndex
- */
-
-/**
+ * @typedef {0 | 1} Player
+ * @typedef {0 | 1 | 2} ColumnIndex
  * @typedef {1 | 2 | 3 | 4 | 5 | 6} DiceValue
- */
-
-/**
  * @typedef {'simple' | 'double' | 'triple'} DiceState
- */
-
-/**
  * @typedef {'object' | 'number'} DiceType
- */
-
-/**
- * @typedef {{value: DiceValue, state: DiceState} | DiceValue} Dice
- */
-
-/**
- * @typedef {Dice[]} Column
- */
-
-/**
+ * @typedef {{value: DiceValue, state: DiceState}} Dice
+ * @typedef {DiceValue[]} Column
  * @typedef {[Column, Column, Column]} PlayerBoard
- */
-
-/**
  * @typedef {[PlayerBoard, PlayerBoard]} Board
  */
 
+/** @type {DiceValue[]} */
+const diceValue = [1, 2, 3, 4, 5, 6]
+/** @type {ColumnIndex[]} */
+const columnIndex = [0, 1, 2]
+/** @type {Board} */
+const emptyBoard = [[[], [], []], [[], [], []]]
 /** @type {DiceState[]} */
 const states = ['simple', 'simple', 'double', 'triple']
 
 /**
- * @returns {Board}
+ * @param {Board} diceValueBoard 
  */
-const initBoard = function (diceValueBoard) {
-  if (diceValueBoard) {
-    // @ts-ignore
-    return diceValueBoard.map(diceValuePlayerBoard => {
-      return diceValuePlayerBoard.map(diceValueColumn => {
-        const groupBy = countBy(diceValueColumn)
-        return diceValueColumn.map(diceValue => {
-          return {
-            value: getDiceValue(diceValue),
-            state: states[groupBy[diceValue]]
-          }
-        })
+const getDiceState = function (diceValueBoard) {
+  return diceValueBoard.map(diceValuePlayerBoard => {
+    return diceValuePlayerBoard.map(diceValueColumn => {
+      const groupBy = countBy(diceValueColumn)
+      return diceValueColumn.map(diceValue => {
+        return {
+          value: diceValue,
+          state: states[groupBy[diceValue]]
+        }
       })
     })
-  }
-  return [[[], [], []], [[], [], []]]
-}
-
-/**
- * @param {Dice} dice 
- * @return {DiceValue}
- */
-const getDiceValue = function (dice) {
-  if (typeof dice === 'number') {
-    return dice
-  }
-  return dice?.value
-}
-/**
- * @param {Board} board
- */
-const getDiceType = function (board) {
-  if (every(flatMapDeep(board), Number)) {
-    return 'number'
-  }
-  return 'object'
+  })
 }
 
 /**
@@ -86,36 +44,24 @@ const getDiceType = function (board) {
  * @param {ColumnIndex} column 
  */
 const play = function (board, player, diceValue, column) {
-  if (player < 1 || player > 2) {
-    throw new Error('Player must be 1 or 2')
+  if (player < 0 || player > 1) {
+    throw new Error('Player must be 0 or 1')
   }
   if (diceValue < 1 || diceValue > 6) {
     throw new Error('The dice is a D6')
   }
-  if (column < 1 || column > 3) {
-    throw new Error('The column is 1, 2 or 3')
+  if (column < 0 || column > 2) {
+    throw new Error('The column is 0, 1 or 2')
   }
-  const boardPlayer = board[player - 1]
-  const boardAdversary = board[player % 2]
-  if (boardPlayer[column - 1].length === 3) {
+  const boardPlayer = board[player]
+  const boardAdversary = board[(player + 1) % 2]
+  if (boardPlayer[column].length === 3) {
     throw new Error('You cannot play here')
   }
-  const diceType = getDiceType(board)
   // push dice on player board
-  boardPlayer[column - 1].push(diceType === 'number' ? diceValue : { value: diceValue, state: 'simple' })
-  if (diceType === 'object') {
-    // update dice state
-    boardPlayer[column - 1].filter(dice => {
-      return getDiceValue(dice) === diceValue
-    }).forEach((dice, index, array) => {
-      if (getDiceValue(dice) === diceValue) {
-        // @ts-ignore
-        dice.state = states[array.length]
-      }
-    })
-  }
-  // remove all dice with same value on adersary board
-  pullAllWith(boardAdversary[column - 1], [diceValue], (a, b) => getDiceValue(a) === getDiceValue(b))
+  boardPlayer[column].push(diceValue)
+  // remove all dice with same value on adversary board
+  pull(boardAdversary[column], diceValue)
 }
 
 /**
@@ -124,7 +70,7 @@ const play = function (board, player, diceValue, column) {
  * @return {number}
  */
 const getColumnPoint = function (column) {
-  const groupBy = countBy(column, getDiceValue)
+  const groupBy = countBy(column)
   return Object.keys(groupBy).reduce((columnPoint, key) => {
     const pt = Number.parseInt(key)
     return columnPoint + pt * groupBy[key] * Math.pow(2, groupBy[key] - 1)
@@ -161,7 +107,7 @@ const getPlayer2Point = function (board) {
  * @param {Board} board
  */
 const isFinish = function (board) {
-  return getPlayableColumn(board, 1).length === 0 || getPlayableColumn(board, 2).length === 0
+  return getPlayableColumn(board, 0).length === 0 || getPlayableColumn(board, 1).length === 0
 }
 
 /**
@@ -171,18 +117,20 @@ const isFinish = function (board) {
  */
 const getPlayableColumn = function (board, player) {
   /** @type {ColumnIndex[]} */
-  const columnIndex = [1, 2, 3]
   return columnIndex.filter(columnIndex => {
-    return board[player - 1][columnIndex - 1].length < 3
+    return board[player][columnIndex].length < 3
   })
 }
 
 module.exports = {
-  initBoard,
+  getDiceState,
   getPlayer1Point,
   getPlayer2Point,
   play,
   isFinish,
   getPlayableColumn,
   getColumnPoint,
+  diceValue,
+  columnIndex,
+  emptyBoard,
 }
