@@ -1438,36 +1438,36 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cutl-knucklebones-class@workspace:^, cutl-knucklebones-class@workspace:workspace/class":
+"cult-knucklebones-class@workspace:^, cult-knucklebones-class@workspace:workspace/class":
   version: 0.0.0-use.local
-  resolution: "cutl-knucklebones-class@workspace:workspace/class"
+  resolution: "cult-knucklebones-class@workspace:workspace/class"
   dependencies:
-    cutl-knucklebones-functions: "workspace:*"
+    cult-knucklebones-functions: "workspace:*"
   languageName: unknown
   linkType: soft
 
-"cutl-knucklebones-cli@workspace:workspace/cli":
+"cult-knucklebones-cli@workspace:workspace/cli":
   version: 0.0.0-use.local
-  resolution: "cutl-knucklebones-cli@workspace:workspace/cli"
+  resolution: "cult-knucklebones-cli@workspace:workspace/cli"
   dependencies:
     cli-table3: ^0.6.2
     commander: ^9.4.0
-    cutl-knucklebones-class: "workspace:^"
+    cult-knucklebones-class: "workspace:^"
     inquirer: ^8.0.0
   languageName: unknown
   linkType: soft
 
-"cutl-knucklebones-functions@workspace:*, cutl-knucklebones-functions@workspace:workspace/functions":
+"cult-knucklebones-functions@workspace:*, cult-knucklebones-functions@workspace:workspace/functions":
   version: 0.0.0-use.local
-  resolution: "cutl-knucklebones-functions@workspace:workspace/functions"
+  resolution: "cult-knucklebones-functions@workspace:workspace/functions"
   dependencies:
     lodash: ^4.17.21
   languageName: unknown
   linkType: soft
 
-"cutl-knucklebones@workspace:.":
+"cult-knucklebones@workspace:.":
   version: 0.0.0-use.local
-  resolution: "cutl-knucklebones@workspace:."
+  resolution: "cult-knucklebones@workspace:."
   dependencies:
     "@types/jest": ^28.1.6
     jest: ^28.1.3

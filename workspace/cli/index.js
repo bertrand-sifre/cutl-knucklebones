@@ -1,6 +1,6 @@
 const { program, Option } = require('commander')
 const inquirer = require('inquirer')
-const Game = require('cutl-knucklebones-class')
+const Game = require('cult-knucklebones-class')
 const Table = require('cli-table3')
 
 // change implementation of stylizeLigne for a cell in lib cli-table-3
@@ -162,11 +162,11 @@ program
     const diceFace = promptFaces[displayType]
     let turn = -1
     while (!game.isFinish()) {
-      /** @type {import('cutl-knucklebones-functions').Player} */
+      /** @type {import('cult-knucklebones-functions').Player} */
       // @ts-ignore
       const player = (++turn % 2)
       // roll dice
-      /** @type {import('cutl-knucklebones-functions').DiceValue} */
+      /** @type {import('cult-knucklebones-functions').DiceValue} */
       // @ts-ignore
       const diceValue = Math.floor(Math.random() * 6) + 1
       // print the gameboard

@@ -1,5 +1,5 @@
 {
-  "name": "cutl-knucklebones",
+  "name": "cult-knucklebones",
   "packageManager": "yarn@3.2.2",
   "workspaces": [
     "workspace/*"

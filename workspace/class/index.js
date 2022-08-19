@@ -1,8 +1,8 @@
-const f = require('cutl-knucklebones-functions')
+const f = require('cult-knucklebones-functions')
 
 class Game {
   constructor() {
-    /** @type {import('cutl-knucklebones-functions').Board} */
+    /** @type {import('cult-knucklebones-functions').Board} */
     this.board = f.emptyBoard
   }
 
@@ -15,25 +15,25 @@ class Game {
   }
 
   /**
-   * @param {import('cutl-knucklebones-functions').DiceValue} diceValue 
-   * @param {import('cutl-knucklebones-functions').ColumnIndex} column 
+   * @param {import('cult-knucklebones-functions').DiceValue} diceValue 
+   * @param {import('cult-knucklebones-functions').ColumnIndex} column 
    */
   playPlayer1(diceValue, column) {
     return this.play(0, diceValue, column)
   }
 
   /**
-   * @param {import('cutl-knucklebones-functions').DiceValue} diceValue 
-   * @param {import('cutl-knucklebones-functions').ColumnIndex} column 
+   * @param {import('cult-knucklebones-functions').DiceValue} diceValue 
+   * @param {import('cult-knucklebones-functions').ColumnIndex} column 
    */
   playPlayer2(diceValue, column) {
     return this.play(1, diceValue, column)
   }
 
   /**
-   * @param {import('cutl-knucklebones-functions').Player} player 
-   * @param {import('cutl-knucklebones-functions').DiceValue} diceValue 
-   * @param {import('cutl-knucklebones-functions').ColumnIndex} column 
+   * @param {import('cult-knucklebones-functions').Player} player 
+   * @param {import('cult-knucklebones-functions').DiceValue} diceValue 
+   * @param {import('cult-knucklebones-functions').ColumnIndex} column 
    */
   play(player, diceValue, column) {
     return f.play(this.board, player, diceValue, column)
@@ -44,7 +44,7 @@ class Game {
   }
 
   /**
-   * @param {import('cutl-knucklebones-functions').Player} player 
+   * @param {import('cult-knucklebones-functions').Player} player 
    */
   getPlayableColumn(player) {
     return f.getPlayableColumn(this.board, player)
