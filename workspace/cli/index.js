@@ -189,7 +189,7 @@ program
         type: 'list',
         message: `${game.getPlayerName()} draw ${diceFace[game.dice]}, choose a column`,
         name: 'value',
-        choices: game.getPlayableColumn()
+        choices: game.getPlayableColumn().map(a => ({ value: a, name: a + 1 }))
       })
       // player
       game.play(column.value)
