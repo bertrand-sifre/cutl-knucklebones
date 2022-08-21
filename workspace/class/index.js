@@ -1,9 +1,24 @@
 const f = require('cult-knucklebones-functions')
 
+/**
+ * @typedef {{
+ *   p1Name: string,
+ *   p2Name: string,
+ * }} GameOptions
+ */
+
 class Game {
-  constructor() {
+
+  /**
+   * @param {GameOptions} options 
+   */
+  constructor(options) {
     /** @type {import('cult-knucklebones-functions').Board} */
     this.board = f.emptyBoard
+    /** @type {string} */
+    this.p1Name = options?.p1Name || 'P1'
+    /** @type {string} */
+    this.p2Name = options?.p2Name || 'P2'
   }
 
   getPlayer1Point() {
