@@ -3434,6 +3434,12 @@ __metadata:
   languageName: node
   linkType: hard
 
+"stats@workspace:workspace/stats":
+  version: 0.0.0-use.local
+  resolution: "stats@workspace:workspace/stats"
+  languageName: unknown
+  linkType: soft
+
 "string-length@npm:^4.0.1":
   version: 4.0.2
   resolution: "string-length@npm:4.0.2"
