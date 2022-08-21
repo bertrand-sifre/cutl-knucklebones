@@ -160,26 +160,25 @@ program
   .action(async (options) => {
     const displayType = options.diceDisplay
     const diceFace = promptFaces[displayType]
-    let turn = -1
     while (!game.isFinish()) {
       /** @type {import('cult-knucklebones-functions').Player} */
       // @ts-ignore
-      const player = (++turn % 2)
+      const player = game.getPlayer()
       // roll dice
       /** @type {import('cult-knucklebones-functions').DiceValue} */
       // @ts-ignore
       const diceValue = Math.floor(Math.random() * 6) + 1
       // print the gameboard
-      printBoard(displayType, player - 1, diceValue)
+      printBoard(displayType, player, diceValue)
       // choose the column
       const column = await inquirer.prompt({
         type: 'list',
-        message: `Player ${player} draw ${diceFace[diceValue]}, choose a column`,
+        message: `${game.getPlayerName()} draw ${diceFace[diceValue]}, choose a column`,
         name: 'value',
-        choices: game.getPlayableColumn(player)
+        choices: game.getPlayableColumn()
       })
       // player
-      game.play(player, diceValue, column.value)
+      game.play(diceValue, column.value)
     }
     printBoard(displayType, -1, -1)
   })
