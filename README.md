@@ -2,6 +2,16 @@
 Implementation of mini-game knucklebones of Cult of the lamb.
 It's a nodeJS implementation on a monorepo.
 
+# Workspace
+## Functions
+[Library](./workspace/functions/) that contains all functions to play the game.
+
+## class
+[Class](./workspace/class/) to play the game.
+
+## cli
+[Command line Interface](./workspace/cli/) to play.
+
 # Developpement
 Clone repo and execute:
 ```yarn install```
