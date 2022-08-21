@@ -13,7 +13,7 @@ class Game {
    */
   constructor(options) {
     /** @type {import('cult-knucklebones-functions').Board} */
-    this.board = f.emptyBoard
+    this.board = f.emptyBoard()
     /** @type {[string, string]} */
     this.playersName = [options?.p1Name || 'P1', options?.p2Name || 'P2']
     /** @type {number} */
@@ -61,6 +61,18 @@ class Game {
 
   isFinish() {
     return f.isFinish(this.board)
+  }
+
+  getWinner() {
+    if (!this.isFinish()) {
+      return null
+    }
+    const p1 = this.getPlayer1Point().total
+    const p2 = this.getPlayer2Point().total
+    if (p1 === p2) {
+      return null
+    }
+    return p1 > p2 ? 0 : 1
   }
 
   getPlayableColumn() {

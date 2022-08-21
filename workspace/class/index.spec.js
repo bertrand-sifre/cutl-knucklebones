@@ -26,8 +26,8 @@ describe('Board', () => {
   it('state dice', () => {
     const game = new Game()
     game.board = [[[1, 1, 1], [2, 3], [4, 4, 3]], [[4, 5, 1], [4, 6], [4]]]
-
-    game.play(2, 1)
+    game.dice = 2
+    game.play(1)
 
     //@ts-ignore
     const states = game.getDiceState()
@@ -39,7 +39,8 @@ describe('Board', () => {
     const game = new Game()
     expect(game.getPlayer()).toEqual(0)
     expect(game.getPlayerName()).toEqual('P1')
-    game.play(1, 1)
+    game.dice = 1
+    game.play(1)
     expect(game.getPlayer()).toEqual(1)
     expect(game.getPlayerName()).toEqual('P2')
     expect(game.getPlayer1Point().total).toEqual(1)
@@ -49,7 +50,8 @@ describe('Board', () => {
     const game = new Game()
     game.board = [[[1, 2, 3], [], []], [[], [], []]]
     game.player = 1
-    game.play(1, 0)
+    game.dice = 1
+    game.play(0)
     // check dice is remove
     expect(game.board[1][0]).toHaveLength(1)
     expect(game.board[0][0]).toHaveLength(2)

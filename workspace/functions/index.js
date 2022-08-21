@@ -16,8 +16,8 @@ const { countBy, pull } = require('lodash')
 const diceValue = [1, 2, 3, 4, 5, 6]
 /** @type {ColumnIndex[]} */
 const columnIndex = [0, 1, 2]
-/** @type {Board} */
-const emptyBoard = [[[], [], []], [[], [], []]]
+/** @return {Board} */
+const emptyBoard = () => [[[], [], []], [[], [], []]]
 /** @type {DiceState[]} */
 const states = ['simple', 'simple', 'double', 'triple']
 

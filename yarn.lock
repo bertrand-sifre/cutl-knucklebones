@@ -1297,6 +1297,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cli-progress@npm:^3.11.2":
+  version: 3.11.2
+  resolution: "cli-progress@npm:3.11.2"
+  dependencies:
+    string-width: ^4.2.3
+  checksum: 147d26b80ceaa24d72f0354d1b58b7f3567b928bf5943be879de31cf16b0a4f1d059984e2e35a664d7d27ae3e7fafd69fd94b35f462c8879caf96d7f31eac442
+  languageName: node
+  linkType: hard
+
 "cli-spinners@npm:^2.5.0":
   version: 2.7.0
   resolution: "cli-spinners@npm:2.7.0"
@@ -1462,6 +1471,15 @@ __metadata:
   resolution: "cult-knucklebones-functions@workspace:workspace/functions"
   dependencies:
     lodash: ^4.17.21
+  languageName: unknown
+  linkType: soft
+
+"cult-knucklebones-stats@workspace:workspace/stats":
+  version: 0.0.0-use.local
+  resolution: "cult-knucklebones-stats@workspace:workspace/stats"
+  dependencies:
+    cli-progress: ^3.11.2
+    cult-knucklebones-class: "workspace:^"
   languageName: unknown
   linkType: soft
 
@@ -3433,12 +3451,6 @@ __metadata:
   checksum: 76b69da0f5b48a34a0f93c98ee2a96544d2c4ca2557f7eef5ddb961d3bdc33870b46f498a84a7c4f4ffb781df639840e7ebf6639164ed4da5e1aeb659615b9c7
   languageName: node
   linkType: hard
-
-"stats@workspace:workspace/stats":
-  version: 0.0.0-use.local
-  resolution: "stats@workspace:workspace/stats"
-  languageName: unknown
-  linkType: soft
 
 "string-length@npm:^4.0.1":
   version: 4.0.2

@@ -1,5 +1,5 @@
 {
-  "name": "stats",
+  "name": "cult-knucklebones-stats",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,5 +8,9 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "cli-progress": "^3.11.2",
+    "cult-knucklebones-class": "workspace:^"
+  }
 }
