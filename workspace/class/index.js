@@ -19,6 +19,8 @@ class Game {
     this.p1Name = options?.p1Name || 'P1'
     /** @type {string} */
     this.p2Name = options?.p2Name || 'P2'
+    /** @type {number} */
+    this.turn = 0
   }
 
   getPlayer1Point() {
@@ -51,6 +53,7 @@ class Game {
    * @param {import('cult-knucklebones-functions').ColumnIndex} column 
    */
   play(player, diceValue, column) {
+    this.turn++
     return f.play(this.board, player, diceValue, column)
   }
 
