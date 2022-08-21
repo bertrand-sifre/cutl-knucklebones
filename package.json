@@ -6,7 +6,9 @@
   ],
   "scripts": {
     "test": "jest",
-    "test-coverage": "jest --collect-coverage"
+    "test-coverage": "jest --collect-coverage",
+    "play": "node ./workspace/cli/index.js",
+    "stats": "node ./workspace/stats/index.js"
   },
   "dependencies": {
     "@types/jest": "^28.1.6",

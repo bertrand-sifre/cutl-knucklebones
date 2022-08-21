@@ -12,6 +12,9 @@ It's a nodeJS implementation on a monorepo.
 ## cli
 [Command line Interface](./workspace/cli/) to play.
 
+## stats
+[Script](./workspace/stats/) to simulate a number of game and print statistics.
+
 # Developpement
 Clone repo and execute:
 ```yarn install```
