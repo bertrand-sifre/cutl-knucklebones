@@ -2,6 +2,7 @@ const { countBy, pull } = require('lodash')
 /**
  * @typedef {0 | 1} Player
  * @typedef {0 | 1 | 2} ColumnIndex
+ * @typedef {0 | 1 | 2} DiceIndex
  * @typedef {1 | 2 | 3 | 4 | 5 | 6} DiceValue
  * @typedef {'simple' | 'double' | 'triple'} DiceState
  * @typedef {'object' | 'number'} DiceType

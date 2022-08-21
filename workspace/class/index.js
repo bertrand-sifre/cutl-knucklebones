@@ -1,10 +1,9 @@
 const f = require('cult-knucklebones-functions')
 
 /**
- * @typedef {{
- *   p1Name: string,
- *   p2Name: string,
- * }} GameOptions
+ * @typedef {object} GameOptions
+ * @property {string=} p1Name
+ * @property {string=} p2Name
  */
 
 class Game {
