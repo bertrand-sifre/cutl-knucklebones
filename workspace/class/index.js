@@ -20,6 +20,8 @@ class Game {
     this.turn = 0
     /** @type {import('cult-knucklebones-functions').Player} */
     this.player = 0
+    /** @type {import('cult-knucklebones-functions').DiceValue} */
+    this.dice = this.#roll()
   }
 
   getPlayer1Point() {
@@ -39,14 +41,22 @@ class Game {
   }
 
   /**
-   * @param {import('cult-knucklebones-functions').DiceValue} diceValue 
    * @param {import('cult-knucklebones-functions').ColumnIndex} column 
    */
-  play(diceValue, column) {
-    f.play(this.board, this.getPlayer(), diceValue, column)
+  play(column) {
+    f.play(this.board, this.getPlayer(), this.dice, column)
     // @ts-ignore
     this.player = (this.player + 1) % 2
     this.turn++
+    this.dice = this.#roll()
+  }
+
+  /**
+   * @return {import('cult-knucklebones-functions').DiceValue}
+   */
+  #roll() {
+    // @ts-ignore
+    return Math.floor(Math.random() * 6) + 1
   }
 
   isFinish() {
@@ -60,6 +70,7 @@ class Game {
   getDiceState() {
     return f.getDiceState(this.board)
   }
+
 }
 
 module.exports = Game

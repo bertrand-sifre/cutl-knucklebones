@@ -70,9 +70,8 @@ const getDiceStyle = function (game, player, column, dice) {
  * @param {Game} game
  * @param {'utf8' | 'number' | 'zoom'} displayType
  * @param {import('cult-knucklebones-functions').Player} whoPlay
- * @param {import('cult-knucklebones-functions').DiceValue} diceValue
  */
-const printBoard = function (game, displayType, whoPlay, diceValue) {
+const printBoard = function (game, displayType, whoPlay) {
   const p1Points = game.getPlayer1Point()
   const p2Points = game.getPlayer2Point()
   const table = new Table({
@@ -89,7 +88,7 @@ const printBoard = function (game, displayType, whoPlay, diceValue) {
     { content: getDiceSymbol(game, 1, 1, 1, displayType), style: getDiceStyle(game, 1, 1, 1), chars: { 'mid': ' ' } }, // P2 column2 dice 2
     { content: getDiceSymbol(game, 1, 2, 1, displayType), style: getDiceStyle(game, 1, 2, 1), chars: { 'mid': ' ' } }, // P2 column3 dice 2
     { content: '', chars: { 'mid': ' ', 'mid-mid': '┤' } }, // empty
-    { content: whoPlay === 1 ? diceFaces[displayType][diceValue] : '', vAlign: 'center', hAlign: 'center', chars: { 'mid': ' ', 'middle': ' ', 'top-mid': ' ' } }, // P2 draw
+    { content: whoPlay === 1 ? diceFaces[displayType][game.dice] : '', vAlign: 'center', hAlign: 'center', chars: { 'mid': ' ', 'middle': ' ', 'top-mid': ' ' } }, // P2 draw
     { content: '', chars: { 'mid': ' ', 'middle': ' ', 'top-mid': ' ', 'right-mid': '│' } }, // empty
   ], [
     { content: getDiceSymbol(game, 1, 0, 0, displayType), style: getDiceStyle(game, 1, 0, 0), chars: { 'mid': ' ' } }, // P2 column1 dice 1
@@ -120,7 +119,7 @@ const printBoard = function (game, displayType, whoPlay, diceValue) {
     { content: '', rowSpan: 3, colSpan: 3 },      // empty
   ], [
     { content: '', chars: { 'left-mid': '│', 'mid': ' ' } }, //empty
-    { content: whoPlay === 0 ? diceFaces[displayType][diceValue] : '', hAlign: 'center', vAlign: 'center', chars: { 'top-mid': ' ', 'mid': ' ', 'middle': ' ' } }, // P1 draw
+    { content: whoPlay === 0 ? diceFaces[displayType][game.dice] : '', hAlign: 'center', vAlign: 'center', chars: { 'top-mid': ' ', 'mid': ' ', 'middle': ' ' } }, // P1 draw
     { content: '', chars: { 'top-mid': ' ', 'mid': ' ', 'middle': ' ' } }, //empty
     { content: getDiceSymbol(game, 0, 0, 1, displayType), style: getDiceStyle(game, 0, 0, 1), chars: { 'mid': ' ', 'mid-mid': '├' } }, // P1 column1 dice 2
     { content: getDiceSymbol(game, 0, 1, 1, displayType), style: getDiceStyle(game, 0, 1, 1), chars: { 'mid': ' ' } }, // P1 column2 dice 2
@@ -183,22 +182,19 @@ program
       // @ts-ignore
       const player = game.getPlayer()
       // roll dice
-      /** @type {import('cult-knucklebones-functions').DiceValue} */
-      // @ts-ignore
-      const diceValue = Math.floor(Math.random() * 6) + 1
       // print the gameboard
-      printBoard(game, displayType, player, diceValue)
+      printBoard(game, displayType, player)
       // choose the column
       const column = await inquirer.prompt({
         type: 'list',
-        message: `${game.getPlayerName()} draw ${diceFace[diceValue]}, choose a column`,
+        message: `${game.getPlayerName()} draw ${diceFace[game.dice]}, choose a column`,
         name: 'value',
         choices: game.getPlayableColumn()
       })
       // player
-      game.play(diceValue, column.value)
+      game.play(column.value)
     }
-    printBoard(game, displayType, -1, -1)
+    printBoard(game, displayType, 0)
   })
 
 program.parse()
