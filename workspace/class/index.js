@@ -4,6 +4,7 @@ const f = require('cult-knucklebones-functions')
  * @typedef {object} GameOptions
  * @property {string=} p1Name
  * @property {string=} p2Name
+ * @property {boolean=} p2Start
  */
 
 class Game {
@@ -19,7 +20,7 @@ class Game {
     /** @type {number} */
     this.turn = 0
     /** @type {import('cult-knucklebones-functions').Player} */
-    this.player = 0
+    this.player = options?.p2Start ? 1 : 0
     /** @type {import('cult-knucklebones-functions').DiceValue} */
     this.dice = this.#roll()
   }

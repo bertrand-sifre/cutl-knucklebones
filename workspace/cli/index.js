@@ -170,12 +170,14 @@ program
   .addOption(new Option('--dice-display <type>', 'Chosse utf-8 to display the dice').default('utf8').choices(['utf8', 'number', 'zoom']))
   .addOption(new Option('--p1-name <name>', 'Change the name of player 1'))
   .addOption(new Option('--p2-name <name>', 'Change the name of player 2'))
+  .addOption(new Option('--p2-start', 'Player 2 start the game'))
   .action(async (options) => {
     const displayType = options.diceDisplay
     const diceFace = promptFaces[displayType]
     const game = new Game({
       p1Name: options.p1Name,
       p2Name: options.p2Name,
+      p2Start: options.p2Start,
     })
     while (!game.isFinish()) {
       /** @type {import('cult-knucklebones-functions').Player} */
