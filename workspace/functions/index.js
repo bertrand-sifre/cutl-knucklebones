@@ -74,7 +74,7 @@ const getColumnPoint = function (column) {
   const groupBy = countBy(column)
   return Object.keys(groupBy).reduce((columnPoint, key) => {
     const pt = Number.parseInt(key)
-    return columnPoint + pt * groupBy[key] * Math.pow(2, groupBy[key] - 1)
+    return columnPoint + pt * groupBy[key] * groupBy[key]
   }, 0)
 }
 

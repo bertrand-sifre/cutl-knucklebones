@@ -14,14 +14,14 @@ describe('Board', () => {
   })
   it('Double points', () => {
     const game = new Game()
-    game.board = [[[1, 1, 1], [2, 3, 2], [4, 4, 3]], [[4, 5, 1], [4, 6], [4]]]
+    game.board = [[[2, 2, 6], [1, 3, 4], [1]], [[4, 4, 4], [6, 6, 5], [2, 3, 4]]]
 
     const p1Points = game.getPlayer1Point()
     const p2Points = game.getPlayer2Point()
-    expect(p1Points.total).toEqual(42)
-    expect(p1Points.column).toEqual([12, 11, 19])
-    expect(p2Points.total).toEqual(24)
-    expect(p2Points.column).toEqual([10, 10, 4])
+    expect(p1Points.column).toEqual([14, 8, 1])
+    expect(p2Points.column).toEqual([36, 29, 9])
+    expect(p1Points.total).toEqual(23)
+    expect(p2Points.total).toEqual(74)
   })
   it('state dice', () => {
     const game = new Game()
